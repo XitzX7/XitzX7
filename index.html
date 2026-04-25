@@ -118,7 +118,7 @@
             COMENTAR EN EL VIDEO
         </a>
 
-        <a href="https://whatsapp.com/channel/0029VbCKayIJkK79xojzCS1a" target="_blank" class="step-btn" id="step4" onclick="startTask(4)">
+        <a href="https://whatsapp.com/channel/0029VbCKayIJkK79xojzCS1a" target="_blank" class="step-btn" id="step4" onclick="instantUnlock(4)">
             UNIRSE AL WHATSAPP
         </a>
 
@@ -128,7 +128,7 @@
     <div id="loading-overlay">
         <div class="loader-box">
             <div class="spinner"></div>
-            <div class="loading-text">Completing Task...</div>
+            <div class="loading-text">Verificando Tarea...</div>
             <div class="progress-bar-bg">
                 <div class="progress-bar-fill" id="bar-fill"></div>
             </div>
@@ -144,21 +144,25 @@
 
         function startTask(num) {
             if (completedTasks[num]) return;
-            setTimeout(() => {
-                currentTask = num;
-                timeClicked = Date.now();
-                isChecking = true;
-            }, 500);
+            currentTask = num;
+            timeClicked = Date.now();
+            isChecking = true;
+        }
+
+        function instantUnlock(num) {
+            if (completedTasks[num]) return;
+            markDone(num);
         }
 
         window.onfocus = function() {
             if (isChecking && currentTask > 0) {
                 let timeSpent = (Date.now() - timeClicked) / 1000;
 
-                if (timeSpent < 3) {
-                    showError();
+                // Si vuelven antes de 2.3 segundos, error total
+                if (timeSpent < 2.3) {
                     isChecking = false;
                     currentTask = 0;
+                    showError();
                 } else {
                     runVerification(currentTask);
                 }
@@ -168,7 +172,8 @@
         function showError() {
             const warn = document.getElementById('warning-top');
             warn.style.display = 'block';
-            setTimeout(() => { warn.style.display = 'none'; }, 4000);
+            // Sonido de error o vibración podrías agregar acá, pero el cartel es clave
+            setTimeout(() => { warn.style.display = 'none'; }, 3500);
         }
 
         function runVerification(num) {
@@ -181,7 +186,7 @@
             let p = 0;
             
             let interval = setInterval(() => {
-                p += Math.floor(Math.random() * 10) + 2;
+                p += Math.floor(Math.random() * 15) + 5; // Más rápido el progreso visual
                 if (p > 100) p = 100;
                 bar.style.width = p + "%";
                 percentText.innerText = p + "%";
@@ -191,9 +196,9 @@
                     setTimeout(() => {
                         overlay.style.display = 'none';
                         markDone(num);
-                    }, 800);
+                    }, 500);
                 }
-            }, 100);
+            }, 80);
         }
 
         function markDone(num) {
