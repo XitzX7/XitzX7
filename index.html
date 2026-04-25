@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XIT STORE - UNLOCKER</title>
+    <style>
+        :root {
+            --cyan: #00f2ff;
+            --magenta: #ff0055;
+            --gold: #ffcc00;
+            --bg: #000000;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; min-height: 100vh;
+        }
+
+        #warning-top {
+            display: none; width: 85%; background: #ff0000; color: white;
+            padding: 12px; border-radius: 10px; text-align: center;
+            font-size: 11px; font-weight: 900; margin-bottom: 20px;
+            text-transform: uppercase; border: 2px solid white;
+            position: fixed; top: 20px; z-index: 1000;
+        }
+
+        .main-card {
+            background: #0a0a0a; border: 2px solid var(--cyan);
+            width: 90%; max-width: 350px; padding: 25px; border-radius: 25px;
+            text-align: center; box-sizing: border-box;
+        }
+
+        h1 { color: var(--cyan); font-size: 24px; margin: 0 0 10px 0; font-weight: 900; }
+        p { font-size: 12px; color: #888; margin-bottom: 25px; }
+
+        .step-btn {
+            display: flex; align-items: center; justify-content: center;
+            background: #111; border: 1px solid #333; padding: 16px;
+            border-radius: 15px; margin-bottom: 12px; text-decoration: none;
+            color: white; font-weight: 900; font-size: 12px; transition: 0.4s;
+            text-transform: uppercase; cursor: pointer;
+        }
+
+        .step-btn.done { 
+            background: rgba(0, 242, 255, 0.2) !important; 
+            border-color: var(--cyan) !important;
+            color: var(--cyan) !important;
+        }
+
+        #download-btn {
+            display: block; width: 100%; padding: 18px; margin-top: 20px;
+            border-radius: 15px; background: #222; color: #555;
+            text-align: center; font-weight: 900; text-decoration: none;
+            pointer-events: none; border: none; text-transform: uppercase;
+            font-size: 13px;
+        }
+
+        #download-btn.ready {
+            background: var(--gold); color: black;
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.5); 
+            pointer-events: auto; cursor: pointer;
+        }
+
+        #loading-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 1000; flex-direction: column;
+            justify-content: center; align-items: center;
+        }
+
+        .loader-box {
+            background: #1a1a1a; padding: 30px; border-radius: 20px;
+            text-align: center; width: 80%; max-width: 300px;
+            border: 1px solid #333;
+        }
+
+        .spinner {
+            border: 4px solid #333; border-top: 4px solid var(--magenta);
+            border-radius: 50%; width: 40px; height: 40px; 
+            animation: spin 1s linear infinite; margin: 0 auto 20px;
+        }
+
+        .progress-bar-bg {
+            background: #333; height: 10px; border-radius: 10px;
+            width: 100%; margin: 15px 0; overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, var(--cyan), var(--magenta));
+            height: 100%; width: 0%; transition: width 0.2s;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { font-weight: 900; font-size: 16px; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+
+    <div id="warning-top">⚠️ COMPLETA LOS PASOS Y NO EVITES EL SISTEMA</div>
+
+    <div class="main-card">
+        <h1>XIT UNLOCKER</h1>
+        <p>SIGUE LOS PASOS PARA DESBLOQUEAR</p>
+
+        <a href="https://www.youtube.com/@XitzX7?sub_confirmation=1" target="_blank" class="step-btn" id="step1" onclick="startTask(1)">
+            SUSCRIBIRSE AL CANAL
+        </a>
+
+        <a href="https://whatsapp.com/channel/0029VbCKayIJkK79xojzCS1a" target="_blank" class="step-btn" id="step2" onclick="startTask(2)">
+            UNIRSE AL WHATSAPP
+        </a>
+
+        <a href="https://youtu.be/0_aaHL2ynCg" target="_blank" class="step-btn" id="step3" onclick="startTask(3)">
+            COMENTAR EN EL VIDEO
+        </a>
+
+        <button id="download-btn">LINK BLOQUEADO</button>
+    </div>
+
+    <div id="loading-overlay">
+        <div class="loader-box">
+            <div class="spinner"></div>
+            <div class="loading-text">Completing Task...</div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="bar-fill"></div>
+            </div>
+            <div id="status-percent" style="font-weight: 900;">0%</div>
+        </div>
+    </div>
+
+    <script>
+        let currentTask = 0;
+        let timeClicked = 0;
+        let completedTasks = { 1: false, 2: false, 3: false };
+        let isChecking = false;
+
+        function startTask(num) {
+            if (completedTasks[num]) return;
+            // Agregamos un pequeño delay antes de activar la verificación
+            // para evitar errores por lags al abrir WhatsApp
+            setTimeout(() => {
+                currentTask = num;
+                timeClicked = Date.now();
+                isChecking = true;
+            }, 500);
+        }
+
+        window.onfocus = function() {
+            if (isChecking && currentTask > 0) {
+                let timeSpent = (Date.now() - timeClicked) / 1000;
+
+                // Bajamos el tiempo a 3 segundos para que WhatsApp no dé error
+                if (timeSpent < 3) {
+                    showError();
+                    isChecking = false;
+                    currentTask = 0;
+                } else {
+                    runVerification(currentTask);
+                }
+            }
+        };
+
+        function showError() {
+            const warn = document.getElementById('warning-top');
+            warn.style.display = 'block';
+            setTimeout(() => { warn.style.display = 'none'; }, 4000);
+        }
+
+        function runVerification(num) {
+            isChecking = false;
+            const overlay = document.getElementById('loading-overlay');
+            const bar = document.getElementById('bar-fill');
+            const percentText = document.getElementById('status-percent');
+            
+            overlay.style.display = 'flex';
+            let p = 0;
+            
+            let interval = setInterval(() => {
+                p += Math.floor(Math.random() * 10) + 2;
+                if (p > 100) p = 100;
+                bar.style.width = p + "%";
+                percentText.innerText = p + "%";
+                
+                if (p >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                        markDone(num);
+                    }, 800);
+                }
+            }, 100);
+        }
+
+        function markDone(num) {
+            completedTasks[num] = true;
+            const btn = document.getElementById('step' + num);
+            btn.classList.add('done');
+            btn.innerText = "✓ DESBLOQUEADO";
+            checkFinal();
+        }
+
+        function checkFinal() {
+            if (completedTasks[1] && completedTasks[2] && completedTasks[3]) {
+                const dlBtn = document.getElementById('download-btn');
+                dlBtn.innerText = "OBTENER ARCHIVO (MEDIAFIRE)";
+                dlBtn.classList.add('ready');
+                dlBtn.onclick = function() {
+                    window.location.href = "https://www.mediafire.com/file/8y4dkfylglp47hc/AIMBOT+CUELLO+👀🇧🇷.7z/file";
+                };
+            }
+        }
+    </script>
+</body>
+</html>
