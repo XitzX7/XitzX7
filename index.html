@@ -110,12 +110,16 @@
             SUSCRIBIRSE AL CANAL
         </a>
 
-        <a href="https://whatsapp.com/channel/0029VbCKayIJkK79xojzCS1a" target="_blank" class="step-btn" id="step2" onclick="startTask(2)">
-            UNIRSE AL WHATSAPP
+        <a href="https://youtu.be/S3RC2xLkMQI" target="_blank" class="step-btn" id="step2" onclick="startTask(2)">
+            DAR LIKE AL VIDEO
         </a>
 
-        <a href="https://youtu.be/0_aaHL2ynCg" target="_blank" class="step-btn" id="step3" onclick="startTask(3)">
+        <a href="https://youtu.be/S3RC2xLkMQI" target="_blank" class="step-btn" id="step3" onclick="startTask(3)">
             COMENTAR EN EL VIDEO
+        </a>
+
+        <a href="https://whatsapp.com/channel/0029VbCKayIJkK79xojzCS1a" target="_blank" class="step-btn" id="step4" onclick="startTask(4)">
+            UNIRSE AL WHATSAPP
         </a>
 
         <button id="download-btn">LINK BLOQUEADO</button>
@@ -135,13 +139,11 @@
     <script>
         let currentTask = 0;
         let timeClicked = 0;
-        let completedTasks = { 1: false, 2: false, 3: false };
+        let completedTasks = { 1: false, 2: false, 3: false, 4: false };
         let isChecking = false;
 
         function startTask(num) {
             if (completedTasks[num]) return;
-            // Agregamos un pequeño delay antes de activar la verificación
-            // para evitar errores por lags al abrir WhatsApp
             setTimeout(() => {
                 currentTask = num;
                 timeClicked = Date.now();
@@ -153,7 +155,6 @@
             if (isChecking && currentTask > 0) {
                 let timeSpent = (Date.now() - timeClicked) / 1000;
 
-                // Bajamos el tiempo a 3 segundos para que WhatsApp no dé error
                 if (timeSpent < 3) {
                     showError();
                     isChecking = false;
@@ -204,12 +205,12 @@
         }
 
         function checkFinal() {
-            if (completedTasks[1] && completedTasks[2] && completedTasks[3]) {
+            if (completedTasks[1] && completedTasks[2] && completedTasks[3] && completedTasks[4]) {
                 const dlBtn = document.getElementById('download-btn');
                 dlBtn.innerText = "OBTENER ARCHIVO (MEDIAFIRE)";
                 dlBtn.classList.add('ready');
                 dlBtn.onclick = function() {
-                    window.location.href = "https://www.mediafire.com/file/8y4dkfylglp47hc/AIMBOT+CUELLO+👀🇧🇷.7z/file";
+                    window.location.href = "https://www.mediafire.com/file/ttzvvdjpkqcn151/AUTO+APUNTADO+100";
                 };
             }
         }
