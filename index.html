@@ -10,22 +10,36 @@
         var dominioPermitido = "fenixdigitar.blogspot.com"; 
         var redireccionAnuncios = "https://fenixdigitar.blogspot.com/search?updated-max=2025-12-02T20:41:03-08:00&max-results=5&m=1#PageNo=17";
         var deDondeViene = document.referrer;
+        var completadoTodo = false; // Switch para liberar al usuario al terminar
 
         // 1. BLOQUEO DE ENTRADA DIRECTA
         if (!deDondeViene || deDondeViene.indexOf(dominioPermitido) === -1) {
             window.location.replace(redireccionAnuncios);
         }
 
-        // 2. REDIRIGIR AL RECARGAR O CERRAR
-        window.onbeforeunload = function() {
-            window.location.replace(redireccionAnuncios);
-        };
+        // 2. FUNCIÓN DE SALIDA AGRESIVA
+        function expulsar() {
+            if (!completadoTodo) {
+                window.location.replace(redireccionAnuncios);
+            }
+        }
 
-        // 3. BLOQUEO DE BOTÓN "ATRÁS"
+        // REDIRIGIR AL MINIMIZAR O CAMBIAR PESTAÑA
+        document.addEventListener("visibilitychange", function() {
+            if (document.visibilityState === 'hidden') {
+                expulsar();
+            }
+        });
+
+        // REDIRIGIR AL RECARGAR O CERRAR
+        window.onbeforeunload = expulsar;
+
+        // BLOQUEO DE BOTÓN "ATRÁS"
         history.pushState(null, null, location.href);
-        window.onpopstate = function () {
-            window.location.replace(redireccionAnuncios);
-        };
+        window.onpopstate = expulsar;
+
+        // Exportar variable para usarla en el script de abajo
+        window.marcarGanador = function() { completadoTodo = true; };
     })();
     </script>
 
@@ -40,7 +54,7 @@
         body {
             background-color: var(--bg);
             color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             margin: 0; padding: 0;
             display: flex; flex-direction: column; align-items: center;
             justify-content: center; min-height: 100vh;
@@ -132,6 +146,7 @@
                 let timerIn = Date.now();
                 let segs = (timerIn - timerOut) / 1000;
 
+                // 1s de delay + 0.9s de espera = 1.9s totales
                 if (segs < 1.9) {
                     document.getElementById('error-msg').style.display = 'block';
                 } else {
@@ -142,8 +157,7 @@
                     completadas++;
                     
                     if (completadas >= 4) {
-                        // Desactivar la redirección al salir cuando ya ganaste
-                        window.onbeforeunload = null;
+                        window.marcarGanador(); // Desactiva la redirección por minimizar
                         const dl = document.getElementById('download-btn');
                         document.getElementById('status-text').innerText = "¡PROCESO COMPLETADO!";
                         dl.innerText = "OBTENER ARCHIVO (MEDIAFIRE)";
