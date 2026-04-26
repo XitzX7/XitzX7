@@ -21,14 +21,6 @@
             justify-content: center; min-height: 100vh;
         }
 
-        #warning-top {
-            display: none; width: 85%; background: #ff0000; color: white;
-            padding: 12px; border-radius: 10px; text-align: center;
-            font-size: 11px; font-weight: 900; margin-bottom: 20px;
-            text-transform: uppercase; border: 2px solid white;
-            position: fixed; top: 20px; z-index: 1000;
-        }
-
         .main-card {
             background: #0a0a0a; border: 2px solid var(--cyan);
             width: 90%; max-width: 350px; padding: 25px; border-radius: 25px;
@@ -65,56 +57,23 @@
             box-shadow: 0 0 20px rgba(255, 204, 0, 0.5); 
             pointer-events: auto; cursor: pointer;
         }
-
-        #loading-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 1000; flex-direction: column;
-            justify-content: center; align-items: center;
-        }
-
-        .loader-box {
-            background: #1a1a1a; padding: 30px; border-radius: 20px;
-            text-align: center; width: 80%; max-width: 300px;
-            border: 1px solid #333;
-        }
-
-        .spinner {
-            border: 4px solid #333; border-top: 4px solid var(--magenta);
-            border-radius: 50%; width: 40px; height: 40px; 
-            animation: spin 1s linear infinite; margin: 0 auto 20px;
-        }
-
-        .progress-bar-bg {
-            background: #333; height: 10px; border-radius: 10px;
-            width: 100%; margin: 15px 0; overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            background: linear-gradient(90deg, var(--cyan), var(--magenta));
-            height: 100%; width: 0%; transition: width 0.2s;
-        }
-
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .loading-text { font-weight: 900; font-size: 16px; margin-bottom: 5px; }
     </style>
 </head>
 <body>
-
-    <div id="warning-top">⚠️ COMPLETA LOS PASOS Y NO EVITES EL SISTEMA</div>
 
     <div class="main-card">
         <h1>XIT UNLOCKER</h1>
         <p>SIGUE LOS PASOS PARA DESBLOQUEAR</p>
 
-        <a href="https://www.youtube.com/@XitzX7?sub_confirmation=1" target="_blank" class="step-btn" id="step1" onclick="startTask(1)">
+        <a href="https://www.youtube.com/@XitzX7?sub_confirmation=1" target="_blank" class="step-btn" id="step1" onclick="instantUnlock(1)">
             SUSCRIBIRSE AL CANAL
         </a>
 
-        <a href="https://youtu.be/S3RC2xLkMQI" target="_blank" class="step-btn" id="step2" onclick="startTask(2)">
+        <a href="https://youtu.be/S3RC2xLkMQI" target="_blank" class="step-btn" id="step2" onclick="instantUnlock(2)">
             DAR LIKE AL VIDEO
         </a>
 
-        <a href="https://youtu.be/S3RC2xLkMQI" target="_blank" class="step-btn" id="step3" onclick="startTask(3)">
+        <a href="https://youtu.be/S3RC2xLkMQI" target="_blank" class="step-btn" id="step3" onclick="instantUnlock(3)">
             COMENTAR EN EL VIDEO
         </a>
 
@@ -125,87 +84,18 @@
         <button id="download-btn">LINK BLOQUEADO</button>
     </div>
 
-    <div id="loading-overlay">
-        <div class="loader-box">
-            <div class="spinner"></div>
-            <div class="loading-text">Verificando Tarea...</div>
-            <div class="progress-bar-bg">
-                <div class="progress-bar-fill" id="bar-fill"></div>
-            </div>
-            <div id="status-percent" style="font-weight: 900;">0%</div>
-        </div>
-    </div>
-
     <script>
-        let currentTask = 0;
-        let timeClicked = 0;
         let completedTasks = { 1: false, 2: false, 3: false, 4: false };
-        let isChecking = false;
-
-        function startTask(num) {
-            if (completedTasks[num]) return;
-            currentTask = num;
-            timeClicked = Date.now();
-            isChecking = true;
-        }
 
         function instantUnlock(num) {
             if (completedTasks[num]) return;
-            markDone(num);
-        }
-
-        window.onfocus = function() {
-            if (isChecking && currentTask > 0) {
-                let timeSpent = (Date.now() - timeClicked) / 1000;
-
-                // Si vuelven antes de 2.3 segundos, error total
-                if (timeSpent < 2.3) {
-                    isChecking = false;
-                    currentTask = 0;
-                    showError();
-                } else {
-                    runVerification(currentTask);
-                }
-            }
-        };
-
-        function showError() {
-            const warn = document.getElementById('warning-top');
-            warn.style.display = 'block';
-            // Sonido de error o vibración podrías agregar acá, pero el cartel es clave
-            setTimeout(() => { warn.style.display = 'none'; }, 3500);
-        }
-
-        function runVerification(num) {
-            isChecking = false;
-            const overlay = document.getElementById('loading-overlay');
-            const bar = document.getElementById('bar-fill');
-            const percentText = document.getElementById('status-percent');
             
-            overlay.style.display = 'flex';
-            let p = 0;
-            
-            let interval = setInterval(() => {
-                p += Math.floor(Math.random() * 15) + 5; // Más rápido el progreso visual
-                if (p > 100) p = 100;
-                bar.style.width = p + "%";
-                percentText.innerText = p + "%";
-                
-                if (p >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        overlay.style.display = 'none';
-                        markDone(num);
-                    }, 500);
-                }
-            }, 80);
-        }
-
-        function markDone(num) {
+            // Se marca como completado al instante que hacen clic
             completedTasks[num] = true;
             const btn = document.getElementById('step' + num);
             btn.classList.add('done');
             btn.innerText = "✓ DESBLOQUEADO";
+            
             checkFinal();
         }
 
