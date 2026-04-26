@@ -46,125 +46,157 @@
             background-color: var(--bg);
             color: white;
             font-family: 'Segoe UI', sans-serif;
-            margin: 0; display: flex; align-items: center;
-            justify-content: center; min-height: 100vh;
+            margin: 0; 
+            display: flex; 
+            align-items: center; /* Centra verticalmente */
+            justify-content: center; /* Centra horizontalmente */
+            height: 100vh; /* Usa todo el alto de la pantalla */
+            overflow: hidden;
         }
 
-        /* --- INTERFAZ 1: SELECTOR MORADO --- */
+        /* --- PANEL PRINCIPAL (Más chiquito y centrado) --- */
+        .card-container {
+            width: 85%; 
+            max-width: 320px; /* Reducido para que se vea más compacto */
+            padding: 20px;
+            border-radius: 25px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
         #pantalla-inicio {
-            background: #050005; border: 2px solid var(--fucsia);
-            width: 90%; max-width: 380px; padding: 30px 20px;
-            border-radius: 30px; text-align: center;
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
+            background: #050005; 
+            border: 2px solid var(--fucsia);
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
         }
-        .lock-icon {
-            width: 50px; height: 50px; border: 1.5px solid var(--fucsia);
-            border-radius: 12px; display: flex; align-items: center;
-            justify-content: center; margin: 0 auto 15px; color: var(--fucsia);
-            box-shadow: 0 0 10px rgba(255, 0, 255, 0.5); font-size: 24px;
-        }
-        .title-morado { font-size: 32px; font-weight: 900; text-shadow: 0 0 10px var(--fucsia); margin: 0; text-transform: uppercase; }
-        .sub-morado { color: var(--fucsia); font-size: 12px; margin: 10px 0 30px; opacity: 0.8; }
-        
-        .selector-grid { display: flex; justify-content: space-around; gap: 10px; }
-        .opt-btn { 
-            background: none; border: none; color: white; font-weight: 800; 
-            font-size: 11px; cursor: pointer; text-transform: uppercase;
-            padding: 10px; transition: 0.3s;
-        }
-        .opt-btn:hover { color: var(--fucsia); text-shadow: 0 0 8px var(--fucsia); }
 
-        /* --- INTERFAZ 2: MISIONES CYAN (OCULTA AL PRINCIPIO) --- */
         #pantalla-misiones {
-            display: none; background: #0a0a0a; border: 2px solid var(--cyan);
-            width: 90%; max-width: 350px; padding: 25px; border-radius: 25px;
-            text-align: center; box-shadow: 0 0 30px rgba(0, 242, 255, 0.15);
+            display: none; 
+            background: #0a0a0a; 
+            border: 2px solid var(--cyan);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
         }
-        #pantalla-misiones h1 { color: var(--cyan); font-size: 24px; margin: 0 0 10px 0; font-weight: 900; }
-        #status-text { font-size: 12px; color: #888; margin-bottom: 25px; }
 
-        .step-btn {
-            display: flex; align-items: center; justify-content: center;
-            background: #111; border: 1px solid #333; padding: 16px;
-            border-radius: 15px; margin-bottom: 12px; text-decoration: none;
-            color: white; font-weight: 900; font-size: 12px; transition: 0.3s;
+        .lock-icon {
+            font-size: 22px;
+            color: var(--fucsia);
+            margin-bottom: 10px;
+        }
+
+        h1 { 
+            font-size: 24px; /* Título un poco más chico */
+            font-weight: 900; 
+            margin: 5px 0;
             text-transform: uppercase;
         }
-        .step-btn.done { border-color: var(--cyan) !important; color: var(--cyan) !important; background: rgba(0, 242, 255, 0.1); }
 
-        #error-msg { color: #ff0055; font-size: 11px; font-weight: 800; display: none; margin-bottom: 15px; }
+        .title-morado { text-shadow: 0 0 8px var(--fucsia); }
+        .title-cyan { color: var(--cyan); }
 
-        #download-btn {
-            display: block; width: 100%; padding: 18px; margin-top: 10px;
-            border-radius: 15px; background: #1a1a1a; color: #444;
-            text-align: center; font-weight: 900; text-decoration: none;
-            pointer-events: none; border: 1px solid #222; text-transform: uppercase;
+        .sub-text { 
+            font-size: 11px; 
+            color: #888; 
+            margin-bottom: 20px; 
+            display: block;
         }
-        #download-btn.ready { background: #ffcc00; color: black; box-shadow: 0 0 25px rgba(255, 204, 0, 0.4); pointer-events: auto; border: none; }
+
+        /* Selector de opciones */
+        .selector-grid { 
+            display: flex; 
+            justify-content: space-around; 
+            gap: 5px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 15px;
+        }
+        
+        .opt-btn { 
+            background: none; border: none; color: white; font-weight: 800; 
+            font-size: 10px; cursor: pointer; text-transform: uppercase;
+            flex: 1;
+        }
+        .opt-btn span { color: var(--fucsia); display: block; font-size: 8px; margin-top: 3px; }
+
+        /* Botones de misiones */
+        .step-btn {
+            display: block;
+            background: #111; 
+            border: 1px solid #333; 
+            padding: 12px;
+            border-radius: 12px; 
+            margin-bottom: 8px; 
+            text-decoration: none;
+            color: white; 
+            font-weight: 800; 
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+        .step-btn.done { border-color: var(--cyan); color: var(--cyan); background: rgba(0, 242, 255, 0.05); }
+
+        #error-msg { color: #ff0055; font-size: 10px; font-weight: 800; display: none; margin-bottom: 10px; }
+
+        .dl-btn {
+            display: block; width: 100%; padding: 15px; margin-top: 10px;
+            border-radius: 12px; background: #1a1a1a; color: #444;
+            font-weight: 900; text-decoration: none; pointer-events: none;
+            border: 1px solid #222; font-size: 12px;
+        }
+        .dl-btn.ready { background: #ffcc00; color: black; pointer-events: auto; border: none; box-shadow: 0 0 15px rgba(255, 204, 0, 0.3); }
     </style>
 </head>
 <body>
 
-    <div id="pantalla-inicio">
+    <div id="pantalla-inicio" class="card-container">
         <div class="lock-icon">🔒</div>
         <h1 class="title-morado">XitzX7</h1>
-        <p class="sub-morado">Panel de acceso exclusivo</p>
+        <span class="sub-text">PANEL DE ACCESO EXCLUSIVO</span>
         
         <div class="selector-grid">
-            <button class="opt-btn" onclick="activarMisiones('17 DE ABRIL', 'https://youtu.be/S3RC2xLkMQI', 'https://www.mediafire.com/file/ttzvvdjpkqcn151/AUTO+APUNTADO+100')">
-                17 DE ABRIL<br><span style="font-size:9px; opacity:0.7;">AUTO APUNTADO</span>
+            <button class="opt-btn" onclick="activar('17 DE ABRIL', 'https://youtu.be/S3RC2xLkMQI', 'https://www.mediafire.com/file/ttzvvdjpkqcn151/AUTO+APUNTADO+100')">
+                17 DE ABRIL <span>AUTO APUNTADO</span>
             </button>
-            <button class="opt-btn" onclick="activarMisiones('18 DE ABRIL', 'LINK_VIDEO_18', 'LINK_MEDIAFIRE_18')">
-                18 DE ABRIL<br><span style="font-size:9px; opacity:0.7;">NUEVO MÉTODO</span>
+            <button class="opt-btn" onclick="activar('18 DE ABRIL', 'URL_VIDEO_18', 'URL_MEDIAFIRE_18')">
+                18 DE ABRIL <span>NUEVO MÉTODO</span>
             </button>
         </div>
     </div>
 
-    <div id="pantalla-misiones">
-        <h1 id="header-mision">XIT UNLOCKER</h1>
-        <p id="status-text">REALIZA LOS PASOS PARA DESCARGAR</p>
+    <div id="pantalla-misiones" class="card-container">
+        <h1 id="header-mision" class="title-cyan">XIT UNLOCKER</h1>
+        <span class="sub-text">COMPLETA LOS PASOS</span>
         
-        <div id="error-msg">⚠️ ERROR: (completa los pasos de verdad)</div>
+        <div id="error-msg">⚠️ ERROR: (PASOS INCOMPLETOS)</div>
 
-        <a href="https://www.youtube.com/@XitzX7?sub_confirmation=1" target="_blank" class="step-btn" id="s1" onclick="verificar(1)">1. SUSCRIBIRSE AL CANAL</a>
-        <a href="#" target="_blank" class="step-btn" id="s2" onclick="verificar(2)">2. DAR LIKE AL VIDEO</a>
-        <a href="#" target="_blank" class="step-btn" id="s3" onclick="verificar(3)">3. COMENTAR EN EL VIDEO</a>
-        <a href="https://whatsapp.com/channel/0029VbCKayIJkK79xojzCS1a" target="_blank" class="step-btn" id="s4" onclick="verificar(4)">4. UNIRSE AL WHATSAPP</a>
+        <a href="https://www.youtube.com/@XitzX7?sub_confirmation=1" target="_blank" class="step-btn" id="s1" onclick="verificar(1)">1. SUSCRIBIRSE</a>
+        <a href="#" target="_blank" class="step-btn" id="s2" onclick="verificar(2)">2. DAR LIKE</a>
+        <a href="#" target="_blank" class="step-btn" id="s3" onclick="verificar(3)">3. COMENTAR</a>
+        <a href="https://whatsapp.com/channel/0029VbCKayIJkK79xojzCS1a" target="_blank" class="step-btn" id="s4" onclick="verificar(4)">4. WHATSAPP</a>
 
-        <button id="download-btn">LINK BLOQUEADO</button>
+        <button id="download-btn" class="dl-btn">BLOQUEADO</button>
     </div>
 
     <script>
         let tareas = { 1: false, 2: false, 3: false, 4: false };
         let timerOut = 0;
         let completadas = 0;
-        let linkDescargaFinal = "";
+        let linkFinal = "";
 
-        function activarMisiones(fecha, video, descarga) {
-            // OCULTA TOTALMENTE EL PANEL MORADO
+        function activar(fecha, video, descarga) {
             document.getElementById('pantalla-inicio').style.display = 'none';
-            
-            // MUESTRA EL PANEL CYAN DE MISIONES
             document.getElementById('pantalla-misiones').style.display = 'block';
-            
-            // Configura los links según lo que eligió
             document.getElementById('header-mision').innerText = fecha;
             document.getElementById('s2').href = video;
             document.getElementById('s3').href = video;
-            linkDescargaFinal = descarga;
+            linkFinal = descarga;
         }
 
         function verificar(n) {
             if (tareas[n]) return;
-            
             window.haciendoMision = true; 
             timerOut = Date.now();
             const btn = document.getElementById('s' + n);
 
             window.onfocus = function() {
                 let segs = (Date.now() - timerOut) / 1000;
-                
-                // Pequeño delay para reactivar la seguridad
                 setTimeout(() => { window.haciendoMision = false; }, 1000);
 
                 if (segs < 1.9) {
@@ -173,16 +205,15 @@
                     document.getElementById('error-msg').style.display = 'none';
                     tareas[n] = true;
                     btn.classList.add('done');
-                    btn.innerText = "✓ COMPLETADO";
+                    btn.innerText = "✓ LISTO";
                     completadas++;
                     
                     if (completadas >= 4) {
                         window.liberarUsuario();
                         const dl = document.getElementById('download-btn');
-                        document.getElementById('status-text').innerText = "¡TODO LISTO!";
-                        dl.innerText = "DESCARGAR ARCHIVO";
+                        dl.innerText = "DESCARGAR AHORA";
                         dl.classList.add('ready');
-                        dl.onclick = function() { window.location.href = linkDescargaFinal; };
+                        dl.onclick = function() { window.location.href = linkFinal; };
                     }
                 }
                 window.onfocus = null;
@@ -190,5 +221,5 @@
         }
     </script>
 </body>
-            </html>
-            
+    </html>
+    
