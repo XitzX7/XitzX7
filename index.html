@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XIT STORE - UNLOCKER</title>
+    
+    <script type="text/javascript">
+    (function() {
+        var dominioPermitido = "fenixdigitar.blogspot.com"; 
+        var redireccionAnuncios = "https://fenixdigitar.blogspot.com/search?updated-max=2025-12-02T20:41:03-08:00&max-results=5&m=1#PageNo=17";
+        var deDondeViene = document.referrer;
+
+        // Si entran directo o desde otro lado que no sea tu blog de anuncios... ¡AFUERA!
+        if (!deDondeViene || deDondeViene.indexOf(dominioPermitido) === -1) {
+            window.location.replace(redireccionAnuncios);
+        }
+    })();
+    </script>
+
     <style>
         :root {
             --cyan: #00f2ff;
@@ -15,47 +29,68 @@
         body {
             background-color: var(--bg);
             color: white;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0; padding: 0;
             display: flex; flex-direction: column; align-items: center;
             justify-content: center; min-height: 100vh;
+            overflow: hidden;
         }
 
         .main-card {
-            background: #0a0a0a; border: 2px solid var(--cyan);
-            width: 90%; max-width: 350px; padding: 25px; border-radius: 25px;
-            text-align: center; box-sizing: border-box;
+            background: #0a0a0a; 
+            border: 2px solid var(--cyan);
+            width: 90%; 
+            max-width: 350px; 
+            padding: 25px; 
+            border-radius: 25px;
+            text-align: center; 
+            box-sizing: border-box;
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.15);
         }
 
-        h1 { color: var(--cyan); font-size: 24px; margin: 0 0 10px 0; font-weight: 900; }
-        p { font-size: 12px; color: #888; margin-bottom: 25px; }
+        h1 { color: var(--cyan); font-size: 24px; margin: 0 0 10px 0; font-weight: 900; letter-spacing: 1px; }
+        p { font-size: 12px; color: #888; margin-bottom: 25px; font-weight: 600; }
 
         .step-btn {
             display: flex; align-items: center; justify-content: center;
             background: #111; border: 1px solid #333; padding: 16px;
             border-radius: 15px; margin-bottom: 12px; text-decoration: none;
-            color: white; font-weight: 900; font-size: 12px; transition: 0.4s;
+            color: white; font-weight: 900; font-size: 12px; transition: 0.3s;
             text-transform: uppercase; cursor: pointer;
         }
 
         .step-btn.done { 
-            background: rgba(0, 242, 255, 0.2) !important; 
+            background: rgba(0, 242, 255, 0.1) !important; 
             border-color: var(--cyan) !important;
             color: var(--cyan) !important;
         }
 
+        #error-msg {
+            color: var(--magenta);
+            font-size: 11px;
+            font-weight: 800;
+            display: none;
+            margin-bottom: 15px;
+            background: rgba(255, 0, 85, 0.1);
+            padding: 8px;
+            border-radius: 8px;
+        }
+
         #download-btn {
-            display: block; width: 100%; padding: 18px; margin-top: 20px;
-            border-radius: 15px; background: #222; color: #555;
+            display: block; width: 100%; padding: 18px; margin-top: 10px;
+            border-radius: 15px; background: #1a1a1a; color: #444;
             text-align: center; font-weight: 900; text-decoration: none;
-            pointer-events: none; border: none; text-transform: uppercase;
-            font-size: 13px;
+            pointer-events: none; border: 1px solid #222; text-transform: uppercase;
+            font-size: 13px; transition: 0.5s;
         }
 
         #download-btn.ready {
-            background: var(--gold); color: black;
-            box-shadow: 0 0 20px rgba(255, 204, 0, 0.5); 
-            pointer-events: auto; cursor: pointer;
+            background: var(--gold); 
+            color: black;
+            box-shadow: 0 0 25px rgba(255, 204, 0, 0.4); 
+            pointer-events: auto; 
+            cursor: pointer;
+            border: none;
         }
     </style>
 </head>
@@ -63,52 +98,69 @@
 
     <div class="main-card">
         <h1>XIT UNLOCKER</h1>
-        <p>SIGUE LOS PASOS PARA DESBLOQUEAR</p>
+        <p id="status-text">SIGUE LOS PASOS PARA DESBLOQUEAR</p>
+        
+        <div id="error-msg">⚠️ ERROR: (completa los pasoos de verdad)</div>
 
-        <a href="https://www.youtube.com/@XitzX7?sub_confirmation=1" target="_blank" class="step-btn" id="step1" onclick="instantUnlock(1)">
-            SUSCRIBIRSE AL CANAL
+        <a href="https://www.youtube.com/@XitzX7?sub_confirmation=1" target="_blank" class="step-btn" id="step1" onclick="verificar(1)">
+            1. SUSCRIBIRSE AL CANAL
         </a>
 
-        <a href="https://youtu.be/S3RC2xLkMQI" target="_blank" class="step-btn" id="step2" onclick="instantUnlock(2)">
-            DAR LIKE AL VIDEO
+        <a href="https://youtu.be/S3RC2xLkMQI" target="_blank" class="step-btn" id="step2" onclick="verificar(2)">
+            2. DAR LIKE AL VIDEO
         </a>
 
-        <a href="https://youtu.be/S3RC2xLkMQI" target="_blank" class="step-btn" id="step3" onclick="instantUnlock(3)">
-            COMENTAR EN EL VIDEO
+        <a href="https://youtu.be/S3RC2xLkMQI" target="_blank" class="step-btn" id="step3" onclick="verificar(3)">
+            3. COMENTAR EN EL VIDEO
         </a>
 
-        <a href="https://whatsapp.com/channel/0029VbCKayIJkK79xojzCS1a" target="_blank" class="step-btn" id="step4" onclick="instantUnlock(4)">
-            UNIRSE AL WHATSAPP
+        <a href="https://whatsapp.com/channel/0029VbCKayIJkK79xojzCS1a" target="_blank" class="step-btn" id="step4" onclick="verificar(4)">
+            4. UNIRSE AL WHATSAPP
         </a>
 
         <button id="download-btn">LINK BLOQUEADO</button>
     </div>
 
     <script>
-        let completedTasks = { 1: false, 2: false, 3: false, 4: false };
+        let tareas = { 1: false, 2: false, 3: false, 4: false };
+        let timerOut = 0;
+        let completadas = 0;
 
-        function instantUnlock(num) {
-            if (completedTasks[num]) return;
+        function verificar(n) {
+            if (tareas[n]) return;
             
-            // Se marca como completado al instante que hacen clic
-            completedTasks[num] = true;
-            const btn = document.getElementById('step' + num);
-            btn.classList.add('done');
-            btn.innerText = "✓ DESBLOQUEADO";
-            
-            checkFinal();
-        }
+            // Guardamos el momento en que sale de la página
+            timerOut = Date.now();
+            const btn = document.getElementById('step' + n);
 
-        function checkFinal() {
-            if (completedTasks[1] && completedTasks[2] && completedTasks[3] && completedTasks[4]) {
-                const dlBtn = document.getElementById('download-btn');
-                dlBtn.innerText = "OBTENER ARCHIVO (MEDIAFIRE)";
-                dlBtn.classList.add('ready');
-                dlBtn.onclick = function() {
-                    window.location.href = "https://www.mediafire.com/file/ttzvvdjpkqcn151/AUTO+APUNTADO+100";
-                };
-            }
+            window.onfocus = function() {
+                let timerIn = Date.now();
+                let segs = (timerIn - timerOut) / 1000;
+
+                // Tu lógica: 1s de delay + 0.9s de espera real = 1.9s totales
+                if (segs < 1.9) {
+                    document.getElementById('error-msg').style.display = 'block';
+                } else {
+                    document.getElementById('error-msg').style.display = 'none';
+                    tareas[n] = true;
+                    btn.classList.add('done');
+                    btn.innerText = "✓ COMPLETADO";
+                    completadas++;
+                    
+                    if (completadas >= 4) {
+                        const dl = document.getElementById('download-btn');
+                        document.getElementById('status-text').innerText = "¡PROCESO COMPLETADO!";
+                        dl.innerText = "OBTENER ARCHIVO (MEDIAFIRE)";
+                        dl.classList.add('ready');
+                        dl.onclick = function() {
+                            window.location.href = "https://www.mediafire.com/file/ttzvvdjpkqcn151/AUTO+APUNTADO+100";
+                        };
+                    }
+                }
+                window.onfocus = null; // Limpiar evento
+            };
         }
     </script>
 </body>
 </html>
+
