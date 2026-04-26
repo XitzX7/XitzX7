@@ -10,10 +10,12 @@
         var urlAnuncios = "https://fenixdigitar.blogspot.com/search?updated-max=2025-12-02T20:41:03-08:00&max-results=5&m=1#PageNo=17";
         var dominioPermitido = "fenixdigitar.blogspot.com";
 
+        // Redirige si no viene del blog
         if (!document.referrer || document.referrer.indexOf(dominioPermitido) === -1) {
             window.location.replace(urlAnuncios);
         }
 
+        // Redirige si intenta recargar la página (F5)
         if (window.performance && window.performance.navigation.type === window.performance.navigation.TYPE_RELOAD) {
             window.location.replace(urlAnuncios);
         }
@@ -22,10 +24,36 @@
 
     <style>
         :root { --cyan: #00f2ff; --fucsia: #ff00ff; --bg: #000000; }
-        body { background-color: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
-        .card-container { width: 85%; max-width: 310px; padding: 18px; border-radius: 25px; text-align: center; box-sizing: border-box; }
-        #pantalla-inicio { background: #050005; border: 2px solid var(--fucsia); box-shadow: 0 0 15px rgba(255, 0, 255, 0.4); }
-        #pantalla-misiones { display: none; background: #0a0a0a; border: 2px solid var(--cyan); box-shadow: 0 0 20px rgba(0, 242, 255, 0.2); }
+        body { 
+            background-color: var(--bg); 
+            color: white; 
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            overflow: hidden; 
+        }
+        .card-container { 
+            width: 85%; 
+            max-width: 310px; 
+            padding: 18px; 
+            border-radius: 25px; 
+            text-align: center; 
+            box-sizing: border-box; 
+        }
+        #pantalla-inicio { 
+            background: #050005; 
+            border: 2px solid var(--fucsia); 
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.4); 
+        }
+        #pantalla-misiones { 
+            display: none; 
+            background: #0a0a0a; 
+            border: 2px solid var(--cyan); 
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2); 
+        }
         .lock-icon { font-size: 20px; color: var(--fucsia); margin-bottom: 8px; }
         h1 { font-size: 22px; font-weight: 900; margin: 5px 0; text-transform: uppercase; }
         .title-morado { text-shadow: 0 0 8px var(--fucsia); }
@@ -48,8 +76,12 @@
         <h1 class="title-morado">XitzX7</h1>
         <span class="sub-text">ACCESO EXCLUSIVO</span>
         <div class="selector-grid">
-            <button class="opt-btn" onclick="activar('17 DE ABRIL', 'https://youtu.be/S3RC2xLkMQI', 'https://www.mediafire.com/file/ttzvvdjpkqcn151/AUTO+APUNTADO+100')">17 DE ABRIL <span>AUTO APUNTADO</span></button>
-            <button class="opt-btn" onclick="activar('18 DE ABRIL', 'URL_VIDEO_18', 'URL_MEDIAFIRE_18')">18 DE ABRIL <span>NUEVO MÉTODO</span></button>
+            <button class="opt-btn" onclick="activar('17 DE ABRIL', 'https://youtu.be/S3RC2xLkMQI', 'https://www.mediafire.com/file/ttzvvdjpkqcn151/AUTO+APUNTADO+100')">
+                17 DE ABRIL <span>AUTO APUNTADO</span>
+            </button>
+            <button class="opt-btn" onclick="activar('18 DE ABRIL', 'URL_VIDEO_18', 'URL_MEDIAFIRE_18')">
+                18 DE ABRIL <span>NUEVO MÉTODO</span>
+            </button>
         </div>
     </div>
 
@@ -57,11 +89,11 @@
         <h1 id="header-mision" class="title-cyan">XIT UNLOCKER</h1>
         <span class="sub-text">COMPLETA LOS PASOS</span>
         <div id="error-msg">⚠️ ESPERA UN MOMENTO...</div>
-        <a href="https://www.youtube.com/@XitzX7?sub_confirmation=1" target="_blank" class="step-btn" id="s1" onclick="verificar(1)">1. SUSCRIBIRSE</a>
-        <a href="#" target="_blank" class="step-btn" id="s2" onclick="verificar(2)">2. DAR LIKE</a>
-        <a href="#" target="_blank" class="step-btn" id="s3" onclick="verificar(3)">3. COMENTAR</a>
-        <a href="https://whatsapp.com/channel/0029VbCKayIJkK79xojzCS1a" target="_blank" class="step-btn" id="s4" onclick="verificar(4)">4. WHATSAPP</a>
-        <button id="download-btn" class="dl-btn">BLOQUEADO</button>
+        <a href="https://www.youtube.com/@XitzX7?sub_confirmation=1" target="_blank" class="step-btn" id="s1" onclick="verificar(1)">1. SUSCRIBIRSE AL CANAL</a>
+        <a href="#" target="_blank" class="step-btn" id="s2" onclick="verificar(2)">2. DAR LIKE AL VIDEO</a>
+        <a href="#" target="_blank" class="step-btn" id="s3" onclick="verificar(3)">3. COMENTAR EN EL VIDEO</a>
+        <a href="https://whatsapp.com/channel/0029VbCKayIJkK79xojzCS1a" target="_blank" class="step-btn" id="s4" onclick="verificar(4)">4. UNIRSE AL WHATSAPP</a>
+        <button id="download-btn" class="dl-btn">LINK BLOQUEADO</button>
     </div>
 
     <script>
@@ -87,16 +119,17 @@
             window.onfocus = function() {
                 let tiempoTotal = (Date.now() - timerOut) / 1000;
                 
-                // LÓGICA: 0.7s de retraso + 0.7s de espera = 1.4s mínimo
+                // LÓGICA: 0.7s de retraso + 0.7s de espera = 1.4s mínimo para habilitar
                 if (tiempoTotal < 1.4) {
                     document.getElementById('error-msg').style.display = 'block';
-                    document.getElementById('error-msg').innerText = "⚠️ ERROR: ESPERA 1.4s MÍNIMO";
+                    document.getElementById('error-msg').innerText = "⚠️ ERROR: PASO MUY RÁPIDO";
                 } else {
                     document.getElementById('error-msg').style.display = 'none';
                     tareas[n] = true;
                     btn.classList.add('done');
                     btn.innerText = "✓ LISTO";
                     completadas++;
+                    
                     if (completadas >= 4) {
                         const dl = document.getElementById('download-btn');
                         dl.innerText = "DESCARGAR AHORA";
