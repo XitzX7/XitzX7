@@ -7,39 +7,36 @@
     
     <script type="text/javascript">
     (function() {
-        var dominioPermitido = "fenixdigitar.blogspot.com"; 
-        var redireccionAnuncios = "https://fenixdigitar.blogspot.com/search?updated-max=2025-12-02T20:41:03-08:00&max-results=5&m=1#PageNo=17";
-        var deDondeViene = document.referrer;
-        var completadoTodo = false; // Switch para liberar al usuario al terminar
+        var urlAnuncios = "https://fenixdigitar.blogspot.com/search?updated-max=2025-12-02T20:41:03-08:00&max-results=5&m=1#PageNo=17";
+        var dominioPermitido = "fenixdigitar.blogspot.com";
+        var completadoTodo = false;
 
-        // 1. BLOQUEO DE ENTRADA DIRECTA
-        if (!deDondeViene || deDondeViene.indexOf(dominioPermitido) === -1) {
-            window.location.replace(redireccionAnuncios);
+        // 1. VALIDACIÓN DE ENTRADA (REFERRER)
+        if (!document.referrer || document.referrer.indexOf(dominioPermitido) === -1) {
+            window.location.replace(urlAnuncios);
         }
 
-        // 2. FUNCIÓN DE SALIDA AGRESIVA
-        function expulsar() {
-            if (!completadoTodo) {
-                window.location.replace(redireccionAnuncios);
-            }
-        }
-
-        // REDIRIGIR AL MINIMIZAR O CAMBIAR PESTAÑA
+        // 2. DETECTOR DE MINIMIZAR / CAMBIO DE PESTAÑA
         document.addEventListener("visibilitychange", function() {
-            if (document.visibilityState === 'hidden') {
-                expulsar();
+            if (document.visibilityState === 'hidden' && !completadoTodo) {
+                window.location.replace(urlAnuncios);
             }
         });
 
-        // REDIRIGIR AL RECARGAR O CERRAR
-        window.onbeforeunload = expulsar;
+        // 3. DETECTOR DE RECARGA (F5)
+        if (window.performance && window.performance.navigation.type === window.performance.navigation.TYPE_RELOAD) {
+            window.location.replace(urlAnuncios);
+        }
 
-        // BLOQUEO DE BOTÓN "ATRÁS"
+        // 4. BLOQUEO DE BOTÓN ATRÁS
         history.pushState(null, null, location.href);
-        window.onpopstate = expulsar;
+        window.onpopstate = function () {
+            if (!completadoTodo) {
+                window.location.replace(urlAnuncios);
+            }
+        };
 
-        // Exportar variable para usarla en el script de abajo
-        window.marcarGanador = function() { completadoTodo = true; };
+        window.liberarUsuario = function() { completadoTodo = true; };
     })();
     </script>
 
@@ -146,7 +143,7 @@
                 let timerIn = Date.now();
                 let segs = (timerIn - timerOut) / 1000;
 
-                // 1s de delay + 0.9s de espera = 1.9s totales
+                // 1s de delay + 0.9s de espera real = 1.9s totales
                 if (segs < 1.9) {
                     document.getElementById('error-msg').style.display = 'block';
                 } else {
@@ -157,7 +154,7 @@
                     completadas++;
                     
                     if (completadas >= 4) {
-                        window.marcarGanador(); // Desactiva la redirección por minimizar
+                        window.liberarUsuario(); // IMPORTANTE: Desactiva expulsión
                         const dl = document.getElementById('download-btn');
                         document.getElementById('status-text').innerText = "¡PROCESO COMPLETADO!";
                         dl.innerText = "OBTENER ARCHIVO (MEDIAFIRE)";
