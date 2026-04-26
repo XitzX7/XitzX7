@@ -11,10 +11,21 @@
         var redireccionAnuncios = "https://fenixdigitar.blogspot.com/search?updated-max=2025-12-02T20:41:03-08:00&max-results=5&m=1#PageNo=17";
         var deDondeViene = document.referrer;
 
-        // Si entran directo o desde otro lado que no sea tu blog de anuncios... ¡AFUERA!
+        // 1. BLOQUEO DE ENTRADA DIRECTA
         if (!deDondeViene || deDondeViene.indexOf(dominioPermitido) === -1) {
             window.location.replace(redireccionAnuncios);
         }
+
+        // 2. REDIRIGIR AL RECARGAR O CERRAR
+        window.onbeforeunload = function() {
+            window.location.replace(redireccionAnuncios);
+        };
+
+        // 3. BLOQUEO DE BOTÓN "ATRÁS"
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () {
+            window.location.replace(redireccionAnuncios);
+        };
     })();
     </script>
 
@@ -33,23 +44,17 @@
             margin: 0; padding: 0;
             display: flex; flex-direction: column; align-items: center;
             justify-content: center; min-height: 100vh;
-            overflow: hidden;
         }
 
         .main-card {
-            background: #0a0a0a; 
-            border: 2px solid var(--cyan);
-            width: 90%; 
-            max-width: 350px; 
-            padding: 25px; 
-            border-radius: 25px;
-            text-align: center; 
-            box-sizing: border-box;
+            background: #0a0a0a; border: 2px solid var(--cyan);
+            width: 90%; max-width: 350px; padding: 25px; border-radius: 25px;
+            text-align: center; box-sizing: border-box;
             box-shadow: 0 0 30px rgba(0, 242, 255, 0.15);
         }
 
-        h1 { color: var(--cyan); font-size: 24px; margin: 0 0 10px 0; font-weight: 900; letter-spacing: 1px; }
-        p { font-size: 12px; color: #888; margin-bottom: 25px; font-weight: 600; }
+        h1 { color: var(--cyan); font-size: 24px; margin: 0 0 10px 0; font-weight: 900; }
+        p { font-size: 12px; color: #888; margin-bottom: 25px; }
 
         .step-btn {
             display: flex; align-items: center; justify-content: center;
@@ -66,14 +71,9 @@
         }
 
         #error-msg {
-            color: var(--magenta);
-            font-size: 11px;
-            font-weight: 800;
-            display: none;
-            margin-bottom: 15px;
-            background: rgba(255, 0, 85, 0.1);
-            padding: 8px;
-            border-radius: 8px;
+            color: var(--magenta); font-size: 11px; font-weight: 800;
+            display: none; margin-bottom: 15px; background: rgba(255, 0, 85, 0.1);
+            padding: 8px; border-radius: 8px;
         }
 
         #download-btn {
@@ -81,16 +81,13 @@
             border-radius: 15px; background: #1a1a1a; color: #444;
             text-align: center; font-weight: 900; text-decoration: none;
             pointer-events: none; border: 1px solid #222; text-transform: uppercase;
-            font-size: 13px; transition: 0.5s;
+            font-size: 13px;
         }
 
         #download-btn.ready {
-            background: var(--gold); 
-            color: black;
+            background: var(--gold); color: black;
             box-shadow: 0 0 25px rgba(255, 204, 0, 0.4); 
-            pointer-events: auto; 
-            cursor: pointer;
-            border: none;
+            pointer-events: auto; cursor: pointer; border: none;
         }
     </style>
 </head>
@@ -128,8 +125,6 @@
 
         function verificar(n) {
             if (tareas[n]) return;
-            
-            // Guardamos el momento en que sale de la página
             timerOut = Date.now();
             const btn = document.getElementById('step' + n);
 
@@ -137,7 +132,6 @@
                 let timerIn = Date.now();
                 let segs = (timerIn - timerOut) / 1000;
 
-                // Tu lógica: 1s de delay + 0.9s de espera real = 1.9s totales
                 if (segs < 1.9) {
                     document.getElementById('error-msg').style.display = 'block';
                 } else {
@@ -148,6 +142,8 @@
                     completadas++;
                     
                     if (completadas >= 4) {
+                        // Desactivar la redirección al salir cuando ya ganaste
+                        window.onbeforeunload = null;
                         const dl = document.getElementById('download-btn');
                         document.getElementById('status-text').innerText = "¡PROCESO COMPLETADO!";
                         dl.innerText = "OBTENER ARCHIVO (MEDIAFIRE)";
@@ -157,10 +153,9 @@
                         };
                     }
                 }
-                window.onfocus = null; // Limpiar evento
+                window.onfocus = null;
             };
         }
     </script>
 </body>
 </html>
-
