@@ -10,27 +10,22 @@
         var urlAnuncios = "https://fenixdigitar.blogspot.com/search?updated-max=2025-12-02T20:41:03-08:00&max-results=5&m=1#PageNo=17";
         var dominioPermitido = "fenixdigitar.blogspot.com";
         var completadoTodo = false;
-        window.haciendoMision = false; // Nueva variable para evitar expulsión por error
+        window.haciendoMision = false; 
 
-        // 1. VALIDACIÓN DE ENTRADA
         if (!document.referrer || document.referrer.indexOf(dominioPermitido) === -1) {
             window.location.replace(urlAnuncios);
         }
 
-        // 2. DETECTOR DE MINIMIZAR (MEJORADO)
         document.addEventListener("visibilitychange", function() {
-            // Solo expulsa si la página se oculta Y NO estamos haciendo una misión
             if (document.visibilityState === 'hidden' && !completadoTodo && !window.haciendoMision) {
                 window.location.replace(urlAnuncios);
             }
         });
 
-        // 3. DETECTOR DE RECARGA
         if (window.performance && window.performance.navigation.type === window.performance.navigation.TYPE_RELOAD) {
             window.location.replace(urlAnuncios);
         }
 
-        // 4. BLOQUEO DE BOTÓN ATRÁS
         history.pushState(null, null, location.href);
         window.onpopstate = function () {
             if (!completadoTodo) { window.location.replace(urlAnuncios); }
@@ -53,11 +48,10 @@
             font-family: 'Segoe UI', sans-serif;
             margin: 0; display: flex; align-items: center;
             justify-content: center; min-height: 100vh;
-            overflow-x: hidden;
         }
 
-        /* --- PANEL INICIAL (MORADO) --- */
-        .panel-morado {
+        /* --- INTERFAZ 1: SELECTOR MORADO --- */
+        #pantalla-inicio {
             background: #050005; border: 2px solid var(--fucsia);
             width: 90%; max-width: 380px; padding: 30px 20px;
             border-radius: 30px; text-align: center;
@@ -67,20 +61,27 @@
             width: 50px; height: 50px; border: 1.5px solid var(--fucsia);
             border-radius: 12px; display: flex; align-items: center;
             justify-content: center; margin: 0 auto 15px; color: var(--fucsia);
-            box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.5); font-size: 24px;
         }
-        .title-morado { font-size: 28px; font-weight: 900; text-shadow: 0 0 10px var(--fucsia); margin: 0; }
-        .text-side { display: flex; justify-content: space-between; margin: 25px 0; }
-        .opt-text { background: none; border: none; color: white; font-weight: 800; font-size: 11px; cursor: pointer; text-transform: uppercase; }
-        .opt-text:hover { color: var(--fucsia); }
+        .title-morado { font-size: 32px; font-weight: 900; text-shadow: 0 0 10px var(--fucsia); margin: 0; text-transform: uppercase; }
+        .sub-morado { color: var(--fucsia); font-size: 12px; margin: 10px 0 30px; opacity: 0.8; }
+        
+        .selector-grid { display: flex; justify-content: space-around; gap: 10px; }
+        .opt-btn { 
+            background: none; border: none; color: white; font-weight: 800; 
+            font-size: 11px; cursor: pointer; text-transform: uppercase;
+            padding: 10px; transition: 0.3s;
+        }
+        .opt-btn:hover { color: var(--fucsia); text-shadow: 0 0 8px var(--fucsia); }
 
-        /* --- PANEL MISIONES (CYAN - EL ORIGINAL) --- */
-        .panel-cyan {
+        /* --- INTERFAZ 2: MISIONES CYAN (OCULTA AL PRINCIPIO) --- */
+        #pantalla-misiones {
             display: none; background: #0a0a0a; border: 2px solid var(--cyan);
             width: 90%; max-width: 350px; padding: 25px; border-radius: 25px;
             text-align: center; box-shadow: 0 0 30px rgba(0, 242, 255, 0.15);
         }
-        .panel-cyan h1 { color: var(--cyan); font-size: 24px; margin: 0 0 10px 0; font-weight: 900; }
+        #pantalla-misiones h1 { color: var(--cyan); font-size: 24px; margin: 0 0 10px 0; font-weight: 900; }
+        #status-text { font-size: 12px; color: #888; margin-bottom: 25px; }
 
         .step-btn {
             display: flex; align-items: center; justify-content: center;
@@ -104,22 +105,26 @@
 </head>
 <body>
 
-    <div id="pantalla-inicio" class="panel-morado">
+    <div id="pantalla-inicio">
         <div class="lock-icon">🔒</div>
         <h1 class="title-morado">XitzX7</h1>
-        <p style="color:var(--fucsia); font-size:12px; margin-top:5px;">Panel de acceso exclusivo</p>
+        <p class="sub-morado">Panel de acceso exclusivo</p>
         
-        <div class="text-side">
-            <button class="opt-text" onclick="comenzar('17 DE ABRIL', 'https://youtu.be/S3RC2xLkMQI', 'https://www.mediafire.com/file/ttzvvdjpkqcn151/AUTO+APUNTADO+100')">17 DE ABRIL<br>AUTO APUNTADO</button>
-            <button class="opt-text" onclick="comenzar('18 DE ABRIL', 'LINK_VIDEO_18', 'LINK_MEDIAFIRE_18')">18 DE ABRIL<br>NUEVO MÉTODO</button>
+        <div class="selector-grid">
+            <button class="opt-btn" onclick="activarMisiones('17 DE ABRIL', 'https://youtu.be/S3RC2xLkMQI', 'https://www.mediafire.com/file/ttzvvdjpkqcn151/AUTO+APUNTADO+100')">
+                17 DE ABRIL<br><span style="font-size:9px; opacity:0.7;">AUTO APUNTADO</span>
+            </button>
+            <button class="opt-btn" onclick="activarMisiones('18 DE ABRIL', 'LINK_VIDEO_18', 'LINK_MEDIAFIRE_18')">
+                18 DE ABRIL<br><span style="font-size:9px; opacity:0.7;">NUEVO MÉTODO</span>
+            </button>
         </div>
     </div>
 
-    <div id="pantalla-misiones" class="panel-cyan">
-        <h1 id="tit-video">XIT UNLOCKER</h1>
-        <p id="status-text" style="font-size:12px; color:#888; margin-bottom:20px;">SIGUE LOS PASOS PARA DESBLOQUEAR</p>
+    <div id="pantalla-misiones">
+        <h1 id="header-mision">XIT UNLOCKER</h1>
+        <p id="status-text">REALIZA LOS PASOS PARA DESCARGAR</p>
         
-        <div id="error-msg">⚠️ ERROR: (completa los pasoos de verdad)</div>
+        <div id="error-msg">⚠️ ERROR: (completa los pasos de verdad)</div>
 
         <a href="https://www.youtube.com/@XitzX7?sub_confirmation=1" target="_blank" class="step-btn" id="s1" onclick="verificar(1)">1. SUSCRIBIRSE AL CANAL</a>
         <a href="#" target="_blank" class="step-btn" id="s2" onclick="verificar(2)">2. DAR LIKE AL VIDEO</a>
@@ -133,23 +138,25 @@
         let tareas = { 1: false, 2: false, 3: false, 4: false };
         let timerOut = 0;
         let completadas = 0;
-        let linkDescarga = "";
+        let linkDescargaFinal = "";
 
-        function comenzar(fecha, video, descarga) {
-            // Desaparece el morado, aparece el cyan
+        function activarMisiones(fecha, video, descarga) {
+            // OCULTA TOTALMENTE EL PANEL MORADO
             document.getElementById('pantalla-inicio').style.display = 'none';
+            
+            // MUESTRA EL PANEL CYAN DE MISIONES
             document.getElementById('pantalla-misiones').style.display = 'block';
             
-            document.getElementById('tit-video').innerText = fecha;
+            // Configura los links según lo que eligió
+            document.getElementById('header-mision').innerText = fecha;
             document.getElementById('s2').href = video;
             document.getElementById('s3').href = video;
-            linkDescarga = descarga;
+            linkDescargaFinal = descarga;
         }
 
         function verificar(n) {
             if (tareas[n]) return;
             
-            // ACTIVAMOS ESTO: Evita que el "Anti-Minimizar" te eche mientras vas a YT
             window.haciendoMision = true; 
             timerOut = Date.now();
             const btn = document.getElementById('s' + n);
@@ -157,7 +164,7 @@
             window.onfocus = function() {
                 let segs = (Date.now() - timerOut) / 1000;
                 
-                // Volvemos a activar la protección después de 1 segundo de haber vuelto
+                // Pequeño delay para reactivar la seguridad
                 setTimeout(() => { window.haciendoMision = false; }, 1000);
 
                 if (segs < 1.9) {
@@ -172,10 +179,10 @@
                     if (completadas >= 4) {
                         window.liberarUsuario();
                         const dl = document.getElementById('download-btn');
-                        document.getElementById('status-text').innerText = "¡PROCESO COMPLETADO!";
-                        dl.innerText = "OBTENER ARCHIVO (MEDIAFIRE)";
+                        document.getElementById('status-text').innerText = "¡TODO LISTO!";
+                        dl.innerText = "DESCARGAR ARCHIVO";
                         dl.classList.add('ready');
-                        dl.onclick = function() { window.location.href = linkDescarga; };
+                        dl.onclick = function() { window.location.href = linkDescargaFinal; };
                     }
                 }
                 window.onfocus = null;
@@ -183,4 +190,5 @@
         }
     </script>
 </body>
-</html>
+            </html>
+            
