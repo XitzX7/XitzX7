@@ -22,77 +22,91 @@
 
     <style>
         :root { 
-            --cyan: #00f2ff; 
-            --bg: #000000; 
+            --neon-blue: #007bff;
+            --neon-glow: #00f2ff;
+            --bg-dark: #000000;
         }
 
         body { 
-            background-color: var(--bg); 
-            color: #333; 
-            font-family: 'Segoe UI', sans-serif; 
+            background-color: var(--bg-dark); 
             margin: 0; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
             height: 100vh; 
+            font-family: sans-serif;
         }
 
+        /* La tarjeta con la forma de la imagen 76993.jpg */
         .card-container { 
             width: 90%; 
-            max-width: 350px; 
-            padding: 30px 20px; 
-            border-radius: 15px; 
-            text-align: left; 
-            box-sizing: border-box; 
-            background: #f8fbff; 
-            border-left: 5px solid #007bff; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            max-width: 360px; 
+            background: #f8fbff; /* Blanco azulado como la imagen */
+            border-radius: 12px; 
+            padding: 25px;
+            box-sizing: border-box;
+            border-left: 6px solid var(--neon-blue); /* La línea azul del costado */
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
         }
 
-        .header-info { display: flex; align-items: center; margin-bottom: 10px; }
-        .dot { height: 8px; width: 8px; background-color: #007bff; border-radius: 50%; margin-right: 10px; box-shadow: 0 0 8px #007bff; }
-        
-        h1 { font-size: 18px; font-weight: 800; margin: 0; color: #222; text-transform: uppercase; }
+        .header { display: flex; align-items: center; margin-bottom: 10px; }
+
+        .status-dot {
+            height: 8px;
+            width: 8px;
+            background-color: var(--neon-blue);
+            border-radius: 50%;
+            margin-right: 10px;
+            box-shadow: 0 0 8px var(--neon-glow);
+        }
+
+        h1 { 
+            font-size: 19px; 
+            font-weight: 800; 
+            color: #222; 
+            margin: 0; 
+            text-transform: uppercase;
+        }
 
         .date-badge {
             display: inline-block;
             background: #2d3446;
             color: white;
-            padding: 5px 12px;
-            border-radius: 5px;
-            font-size: 12px;
-            font-weight: 600;
+            padding: 7px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
             margin: 15px 0;
         }
 
-        /* Estilo de los Botones (Estilo Neón Azul) */
+        /* Botones estilo Neón */
         .btn-action { 
             width: 100%; 
-            padding: 16px; 
-            margin-top: 10px; 
+            padding: 18px; 
             border-radius: 8px; 
-            background: #007bff; 
-            color: white; 
             font-weight: 800; 
             border: none; 
-            font-size: 14px; 
+            font-size: 15px; 
             text-transform: uppercase;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+            color: white;
+            background: var(--neon-blue);
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
             transition: 0.3s;
         }
 
         .btn-action:hover {
-            background: #00f2ff;
-            box-shadow: 0 0 20px #00f2ff;
+            background: var(--neon-glow);
+            box-shadow: 0 0 20px var(--neon-glow);
             color: #000;
         }
 
         /* Barra de Carga */
-        #loading-area { display: none; margin-top: 20px; }
+        #loading-area { display: none; margin-top: 15px; }
         .progress-container {
             width: 100%;
-            height: 15px;
+            height: 20px;
             background: #e9ecef;
             border-radius: 10px;
             overflow: hidden;
@@ -100,24 +114,23 @@
         .progress-bar {
             width: 0%;
             height: 100%;
-            background: linear-gradient(90deg, #007bff, #00f2ff);
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-glow));
             transition: width 0.1s linear;
         }
-        .percent-text { display: block; text-align: right; font-weight: 700; color: #555; font-size: 14px; margin-top: 5px; }
+        .percent-text { display: block; text-align: right; font-weight: 700; color: #555; margin-top: 5px; }
 
-        /* Botón oculto al inicio */
         #final-dl { display: none; }
     </style>
 </head>
 <body>
 
     <div class="card-container">
-        <div class="header-info">
-            <span class="dot"></span>
-            <h1>REGEDIT 90% CABEZA 📁</h1>
+        <div class="header">
+            <span class="status-dot"></span>
+            <h1>AUTOAPUNTADO BRUTAL 📁</h1>
         </div>
 
-        <div class="date-badge">15 ABRIL</div>
+        <div class="date-badge">26 ABRIL</div>
 
         <button id="start-btn" class="btn-action" onclick="iniciarCarga()">INICIAR</button>
 
@@ -128,14 +141,13 @@
             <span class="percent-text" id="percent">0%</span>
         </div>
 
-        <button id="final-dl" class="btn-action" onclick="descargar()">DESCARGAR AQUÍ</button>
+        <button id="final-dl" class="btn-action" onclick="descargar()">DESCARGA</button>
     </div>
 
     <script>
         let linkFinal = "https://www.mediafire.com/file/6crte91p8qcisxn/AUTOAPUNTADO+BRUTAL+HACK👹.7z/file";
 
         function iniciarCarga() {
-            // Escondo el botón de iniciar y muestro la carga
             document.getElementById('start-btn').style.display = 'none';
             document.getElementById('loading-area').style.display = 'block';
 
@@ -146,7 +158,6 @@
             let interval = setInterval(function() {
                 if (width >= 100) {
                     clearInterval(interval);
-                    // Cuando termina, escondo carga y muestro botón final
                     document.getElementById('loading-area').style.display = 'none';
                     document.getElementById('final-dl').style.display = 'block';
                 } else {
@@ -154,7 +165,7 @@
                     bar.style.width = width + '%';
                     percentText.innerText = width + '%';
                 }
-            }, 40); // Ajusta este número para que cargue más lento o más rápido
+            }, 40); 
         }
 
         function descargar() {
