@@ -21,7 +21,6 @@
     </script>
 
     <style>
-        /* Se cambió el Fucsia por el Cian */
         :root { --cyan: #00f2ff; --bg: #000000; }
         body { 
             background-color: var(--bg); 
@@ -37,30 +36,19 @@
         .card-container { 
             width: 85%; 
             max-width: 310px; 
-            padding: 18px; 
+            padding: 25px; 
             border-radius: 25px; 
             text-align: center; 
             box-sizing: border-box; 
-        }
-        #pantalla-inicio { 
-            background: #000505; /* Fondo ajustado a cian oscuro */
-            border: 2px solid var(--cyan); 
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.4); 
-        }
-        #pantalla-misiones { 
-            display: none; 
             background: #0a0a0a; 
             border: 2px solid var(--cyan); 
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2); 
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
         }
         .lock-icon { font-size: 20px; color: var(--cyan); margin-bottom: 8px; }
         h1 { font-size: 22px; font-weight: 900; margin: 5px 0; text-transform: uppercase; }
         .title-cyan { color: var(--cyan); text-shadow: 0 0 8px var(--cyan); }
         .sub-text { font-size: 10px; color: #888; margin-bottom: 18px; display: block; letter-spacing: 1px; }
-        .selector-grid { display: flex; justify-content: space-around; gap: 5px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; }
-        .opt-btn { background: none; border: none; color: white; font-weight: 800; font-size: 9px; cursor: pointer; text-transform: uppercase; flex: 1; outline: none; }
-        .opt-btn span { color: var(--cyan); display: block; font-size: 7px; margin-top: 2px; }
-        .step-btn { display: block; background: #111; border: 1px solid #222; padding: 11px; border-radius: 12px; margin-bottom: 7px; text-decoration: none; color: white; font-weight: 800; font-size: 10px; text-transform: uppercase; }
+        .step-btn { display: block; background: #111; border: 1px solid #222; padding: 12px; border-radius: 12px; margin-bottom: 8px; text-decoration: none; color: white; font-weight: 800; font-size: 10px; text-transform: uppercase; }
         .step-btn.done { border-color: var(--cyan); color: var(--cyan); background: rgba(0, 242, 255, 0.05); }
         #error-msg { color: #ff0055; font-size: 9px; font-weight: 800; display: none; margin-bottom: 8px; }
         .dl-btn { display: block; width: 100%; padding: 14px; margin-top: 10px; border-radius: 12px; background: #1a1a1a; color: #444; font-weight: 900; text-decoration: none; pointer-events: none; border: 1px solid #222; font-size: 11px; }
@@ -69,45 +57,27 @@
 </head>
 <body>
 
-    <div id="pantalla-inicio" class="card-container">
+    <div class="card-container">
         <div class="lock-icon">🔒</div>
         <h1 class="title-cyan">ESPERA UN MOMENTO...</h1>
-        <span class="sub-text">ACCESO EXCLUSIVO</span>
-        <div class="selector-grid">
-            <button class="opt-btn" onclick="activar('17 DE ABRIL', 'https://youtu.be/S3RC2xLkMQI', 'https://www.mediafire.com/file/ttzvvdjpkqcn151/AUTO+APUNTADO+100')">
-                17 DE ABRIL <span>AUTO APUNTADO</span>
-            </button>
-            <button class="opt-btn" onclick="activar('18 DE ABRIL', 'https://youtu.be/JJshIt8cjLg?si=SALV_b0TJPLNlG8h', 'TU_URL_DE_DESCARGA_AQUI')">
-                18 DE ABRIL <span>NUEVO MÉTODO</span>
-            </button>
-        </div>
-    </div>
-
-    <div id="pantalla-misiones" class="card-container">
-        <h1 id="header-mision" class="title-cyan">XIT UNLOCKER</h1>
         <span class="sub-text">COMPLETA LOS PASOS</span>
+        
         <div id="error-msg">⚠️ ESPERA UN MOMENTO...</div>
+
         <a href="https://www.youtube.com/@XitzX7?sub_confirmation=1" target="_blank" class="step-btn" id="s1" onclick="verificar(1)">1. SUSCRIBIRSE AL CANAL</a>
-        <a href="#" target="_blank" class="step-btn" id="s2" onclick="verificar(2)">2. DAR LIKE AL VIDEO</a>
-        <a href="#" target="_blank" class="step-btn" id="s3" onclick="verificar(3)">3. COMENTAR EN EL VIDEO</a>
-        <a href="https://whatsapp.com/channel/0029VbCKayIJkK79xojzCS1a" target="_blank" class="step-btn" id="s4" onclick="verificar(4)">4. UNIRSE AL WHATSAPP</a>
+        
+        <a href="https://youtu.be/JJshIt8cjLg?si=YRtVBtmBDRd8qgKY" target="_blank" class="step-btn" id="s2" onclick="verificar(2)">2. DAR LIKE AL VIDEO</a>
+        <a href="https://youtu.be/JJshIt8cjLg?si=YRtVBtmBDRd8qgKY" target="_blank" class="step-btn" id="s3" onclick="verificar(3)">3. COMENTAR EN EL VIDEO</a>
+
         <button id="download-btn" class="dl-btn">LINK BLOQUEADO</button>
     </div>
 
     <script>
-        let tareas = { 1: false, 2: false, 3: false, 4: false };
-        let timerOut = 0;
+        let tareas = { 1: false, 2: false, 3: false };
         let completadas = 0;
-        let linkFinal = "";
-
-        function activar(fecha, video, descarga) {
-            document.getElementById('pantalla-inicio').style.display = 'none';
-            document.getElementById('pantalla-misiones').style.display = 'block';
-            document.getElementById('header-mision').innerText = fecha;
-            document.getElementById('s2').href = video;
-            document.getElementById('s3').href = video;
-            linkFinal = descarga;
-        }
+        let timerOut = 0;
+        // Pone aquí tu link de descarga directo de Mediafire
+        let linkFinal = "URL_DE_DESCARGA_AQUÍ";
 
         function verificar(n) {
             if (tareas[n]) return;
@@ -127,7 +97,7 @@
                     btn.innerText = "✓ LISTO";
                     completadas++;
                     
-                    if (completadas >= 4) {
+                    if (completadas >= 3) {
                         const dl = document.getElementById('download-btn');
                         dl.innerText = "DESCARGAR AHORA";
                         dl.classList.add('ready');
